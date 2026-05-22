@@ -36,7 +36,7 @@ const year = new Date().getFullYear();
     </div>
     <div class="bottom">
       <p>© {year} Андрей Мороз. Сайт защищён <a href="/pqc/">пост-квантовой криптографией</a>.</p>
-      <p class="mono">Source: <a href="https://github.com/IDonRumata/marshrut-network">github.com/IDonRumata/marshrut-network</a></p>
+      <p class="source">Исходный код этого сайта <a href="https://github.com/IDonRumata/marshrut-network" rel="noopener">открыт</a>.</p>
     </div>
   </Container>
 </footer>
@@ -100,5 +100,6 @@ const year = new Date().getFullYear();
   }
   .bottom a { color: var(--color-smoke); }
   .bottom a:hover { color: var(--color-headlight); }
-  .mono { font-family: var(--font-family-mono); }
+  .source { opacity: 0.55; }
+  .source a { color: var(--color-smoke); text-decoration: underline; text-decoration-color: rgba(136, 146, 164, 0.3); }
 </style>

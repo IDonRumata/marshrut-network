@@ -25,7 +25,7 @@ const dateStr = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long'
 const chapterStr = String(chapter.data.chapterNumber).padStart(2, '0');
 ---
 <Base
-  title={chapter.data.seo?.title ?? `${chapter.data.title} — Маршрут`}
+  title={chapter.data.seo?.title ?? `${chapter.data.title} - Маршрут`}
   description={chapter.data.seo?.description ?? chapter.data.previewText}
   ogType="article"
 >

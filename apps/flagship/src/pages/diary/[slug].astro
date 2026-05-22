@@ -15,7 +15,7 @@ const { Content } = await render(entry);
 const dateStr = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }).format(entry.data.publishedAt);
 ---
 <Base
-  title={`${entry.data.title} — Дневник Маршрут`}
+  title={`${entry.data.title} - Дневник Маршрут`}
   description={entry.data.seo?.description ?? entry.body?.slice(0, 160) ?? ''}
   ogType="article"
 >

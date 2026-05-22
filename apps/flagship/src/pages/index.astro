@@ -20,7 +20,7 @@ const diaryEntries = (await getCollection('diary'))
 const totalChapters = (await getCollection('book')).length;
 ---
 <Base
-  title="Маршрут — Дальнобойщик → Свободный человек"
+  title="Маршрут - Дальнобойщик → Свободный человек"
   description="Реальная история трансформации из дальнобойщика в свободного человека. Книга, дневник, инструменты. Без коучей."
 >
   <Header />
@@ -201,7 +201,7 @@ const totalChapters = (await getCollection('book')).length;
     color: var(--color-ink);
     border-bottom: 1px solid var(--color-mile);
   }
-  .col--negative li::before { content: '— '; color: var(--color-smoke); }
+  .col--negative li::before { content: '- '; color: var(--color-smoke); }
   .col--positive li::before { content: '✓ '; color: var(--color-headlight); font-weight: bold; }
 
   /* Generic section */

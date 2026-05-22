@@ -6,20 +6,33 @@ updates:
       interval: "weekly"
       day: "monday"
     open-pull-requests-limit: 5
+    # Игнорируем major version bumps — мы будем обновлять их вручную,
+    # потому что dependabot часто берёт alpha/beta из npm registry
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
       astro:
         patterns:
           - "astro"
           - "@astrojs/*"
+        update-types: ["minor", "patch"]
       dev-dependencies:
         dependency-type: "development"
+        update-types: ["minor", "patch"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "monthly"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "docker"
     directory: "/infra/docker"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
