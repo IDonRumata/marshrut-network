@@ -34,7 +34,7 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --allow-build=esbuild --allow-build=sharp
 
       - name: Build design tokens
         run: pnpm --filter=@marshrut/design-tokens build
