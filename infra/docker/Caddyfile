@@ -1,0 +1,80 @@
+# ============================================================
+# Caddyfile для marshrut.eu
+# Caddy 2.8+ автоматически использует TLS 1.3 + X25519MLKEM768
+# (гибридная пост-квантовая криптография, NIST FIPS 203).
+# ============================================================
+
+{
+	# Глобальные настройки
+	email {$ACME_EMAIL}
+
+	# Логи в stdout — Docker подхватит и ротирует через json-file driver
+	log {
+		output stdout
+		format json
+		level INFO
+	}
+
+	servers {
+		# TLS 1.3 only — отсекаем устаревшие протоколы
+		protocols h1 h2 h3
+	}
+}
+
+# ============================================================
+# Основной сайт
+# ============================================================
+{$SITE_DOMAIN:marshrut.eu}, {$SITE_DOMAIN_WWW:www.marshrut.eu} {
+	root * /srv/marshrut
+
+	# Безопасные заголовки
+	header {
+		# HSTS — год, включая поддомены
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+		# Защита от MIME-sniffing
+		X-Content-Type-Options "nosniff"
+
+		# Запрет вставки в iframe
+		X-Frame-Options "DENY"
+
+		# Referrer policy
+		Referrer-Policy "strict-origin-when-cross-origin"
+
+		# CSP — базовая, ужесточим когда добавим аналитику и шрифты
+		Content-Security-Policy "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+
+		# Permissions Policy — отключаем сенсоры/камеру/микрофон
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+
+		# Убираем server header
+		-Server
+	}
+
+	# Кеш статики
+	@static {
+		path *.css *.js *.webp *.avif *.png *.jpg *.jpeg *.svg *.woff2 *.woff
+	}
+	header @static Cache-Control "public, max-age=2592000, immutable"
+
+	# HTML — короткий кеш, чтобы обновления подхватывались
+	@html {
+		path *.html /
+	}
+	header @html Cache-Control "public, max-age=300, must-revalidate"
+
+	# Gzip + Zstd сжатие
+	encode zstd gzip
+
+	# 404 fallback
+	handle_errors {
+		@404 expression {http.error.status_code} == 404
+		rewrite @404 /404.html
+		file_server
+	}
+
+	file_server {
+		precompressed gzip
+		hide .git .env
+	}
+}

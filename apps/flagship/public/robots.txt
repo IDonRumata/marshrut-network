@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+# AI крауллеры — разрешаем индексацию для GEO/AEO
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://marshrut.eu/sitemap.xml
