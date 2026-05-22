@@ -1,0 +1,21 @@
+{
+  "name": "marshrut-network",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Контентная экосистема Маршрут — личный бренд и нишевые сайты",
+  "author": "Andrei Moroz <andrey@marshrut.eu>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IDonRumata/marshrut-network"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "dev": "pnpm --filter=@marshrut/flagship dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint"
+  }
+}
