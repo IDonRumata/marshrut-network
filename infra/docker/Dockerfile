@@ -30,7 +30,7 @@ RUN pnpm --filter=@marshrut/flagship build
 # ============================================
 # Stage 2: Runtime — Caddy (PQC + auto HTTPS)
 # ============================================
-FROM caddy:2.8-alpine AS runtime
+FROM caddy:2.11-alpine AS runtime
 
 LABEL org.opencontainers.image.title="Marshrut Flagship"
 LABEL org.opencontainers.image.description="Personal brand site for Andrei Moroz — marshrut.eu"
