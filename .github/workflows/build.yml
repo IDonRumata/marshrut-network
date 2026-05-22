@@ -34,7 +34,10 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile --allow-build=esbuild --allow-build=sharp
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Build native bindings (esbuild, sharp)
+        run: pnpm rebuild esbuild sharp
 
       - name: Build design tokens
         run: pnpm --filter=@marshrut/design-tokens build
