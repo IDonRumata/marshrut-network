@@ -1,3 +1,8 @@
 packages:
   - "apps/*"
   - "packages/*"
+
+# Разрешаем post-install скрипты только для проверенных пакетов
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
