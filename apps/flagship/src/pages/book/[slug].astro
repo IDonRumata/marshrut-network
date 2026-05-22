@@ -1,0 +1,187 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Container from '../../components/Container.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import EmailSubscribe from '../../components/EmailSubscribe.astro';
+
+export async function getStaticPaths() {
+  const chapters = await getCollection('book');
+  const sorted = [...chapters].sort((a, b) => a.data.chapterNumber - b.data.chapterNumber);
+  return sorted.map((chapter, i) => ({
+    params: { slug: chapter.id },
+    props: {
+      chapter,
+      prev: sorted[i - 1] ?? null,
+      next: sorted[i + 1] ?? null,
+    },
+  }));
+}
+
+const { chapter, prev, next } = Astro.props;
+const { Content } = await render(chapter);
+const dateStr = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }).format(chapter.data.publishedAt);
+const chapterStr = String(chapter.data.chapterNumber).padStart(2, '0');
+---
+<Base
+  title={chapter.data.seo?.title ?? `${chapter.data.title} — Маршрут`}
+  description={chapter.data.seo?.description ?? chapter.data.previewText}
+  ogType="article"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: chapter.data.title,
+      datePublished: chapter.data.publishedAt.toISOString(),
+      author: { '@type': 'Person', name: 'Андрей Мороз' },
+      description: chapter.data.previewText,
+      inLanguage: 'ru',
+      isPartOf: { '@type': 'Book', name: 'Маршрут' },
+    })} />
+  </Fragment>
+
+  <Header />
+  <main>
+    <Container size="narrow">
+      <header class="chapter-header">
+        <p class="number">Глава {chapterStr}</p>
+        <h1>{chapter.data.title}</h1>
+        {chapter.data.subtitle && <p class="subtitle">{chapter.data.subtitle}</p>}
+        <div class="meta">
+          <span>{dateStr}</span>
+          <span>·</span>
+          <span>{chapter.data.readingTimeMin} мин чтения</span>
+        </div>
+      </header>
+
+      <article class="chapter-body">
+        <Content />
+      </article>
+
+      <nav class="chapter-nav">
+        {prev ? (
+          <a class="nav-link nav-prev" href={`/book/${prev.id}/`}>
+            <span class="dir">← Предыдущая</span>
+            <span class="title">{prev.data.title}</span>
+          </a>
+        ) : <span />}
+        {next && (
+          <a class="nav-link nav-next" href={`/book/${next.id}/`}>
+            <span class="dir">Следующая →</span>
+            <span class="title">{next.data.title}</span>
+          </a>
+        )}
+      </nav>
+
+      <div class="email-wrap">
+        <EmailSubscribe variant="light" compact />
+      </div>
+    </Container>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .chapter-header {
+    padding: var(--space-8) 0 var(--space-4);
+    text-align: center;
+    border-bottom: 1px solid var(--color-mile);
+    margin-bottom: var(--space-6);
+  }
+  .number {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-headlight);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: var(--space-2);
+  }
+  h1 {
+    font-family: var(--font-family-heading);
+    font-size: clamp(2rem, 5vw, 3.75rem);
+    line-height: 1.15;
+    color: var(--color-ink);
+    margin-bottom: var(--space-2);
+  }
+  .subtitle {
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-lg);
+    font-style: italic;
+    color: var(--color-smoke);
+    margin-bottom: var(--space-3);
+  }
+  .meta {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-smoke);
+    display: flex;
+    gap: var(--space-1);
+    justify-content: center;
+  }
+
+  .chapter-body {
+    font-family: var(--font-family-heading);
+    font-size: clamp(1.1rem, 1.5vw, 1.25rem);
+    line-height: 1.8;
+    color: var(--color-ink);
+  }
+  .chapter-body :global(p)   { margin-bottom: var(--space-3); }
+  .chapter-body :global(h2)  { margin-top: var(--space-6); margin-bottom: var(--space-2); font-size: var(--font-size-2xl); }
+  .chapter-body :global(h3)  { margin-top: var(--space-4); margin-bottom: var(--space-2); font-size: var(--font-size-xl); }
+  .chapter-body :global(blockquote) {
+    margin: var(--space-4) 0;
+    padding: var(--space-2) var(--space-4);
+    border-left: 4px solid var(--color-headlight);
+    font-style: italic;
+    color: var(--color-smoke);
+  }
+  .chapter-body :global(em) { font-style: italic; }
+  .chapter-body :global(strong) { font-weight: 700; }
+  .chapter-body :global(a) {
+    color: var(--color-headlight);
+    text-decoration: underline;
+    text-decoration-color: rgba(233, 69, 96, 0.3);
+    text-underline-offset: 4px;
+  }
+
+  .chapter-nav {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+    padding: var(--space-6) 0;
+    margin-top: var(--space-6);
+    border-top: 1px solid var(--color-mile);
+  }
+  @media (min-width: 600px) {
+    .chapter-nav { grid-template-columns: 1fr 1fr; }
+  }
+  .nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: var(--space-3);
+    border: 1px solid var(--color-mile);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: var(--color-ink);
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .nav-link:hover { border-color: var(--color-headlight); transform: translateY(-2px); opacity: 1; }
+  .nav-next { text-align: right; }
+  .dir {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-headlight);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .nav-link .title {
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-ink);
+  }
+  .email-wrap { padding-bottom: var(--space-8); }
+</style>

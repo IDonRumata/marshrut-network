@@ -1,0 +1,97 @@
+---
+interface Props {
+  chapterNumber: number;
+  title: string;
+  preview: string;
+  href: string;
+  readingTimeMin: number;
+  publishedAt: Date;
+  isFree?: boolean;
+}
+const { chapterNumber, title, preview, href, readingTimeMin, publishedAt, isFree = true } = Astro.props;
+const dateStr = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }).format(publishedAt);
+const chapterStr = String(chapterNumber).padStart(2, '0');
+---
+<a class="card" href={href}>
+  <div class="meta">
+    <span class="number">Глава {chapterStr}</span>
+    {isFree && <span class="badge">Бесплатно</span>}
+  </div>
+  <h3 class="title">{title}</h3>
+  <p class="preview">{preview}</p>
+  <div class="footer">
+    <span>{dateStr}</span>
+    <span>·</span>
+    <span>{readingTimeMin} мин чтения</span>
+  </div>
+</a>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--color-white);
+    border: 1px solid var(--color-mile);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    height: 100%;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-cardHover);
+    border-color: var(--color-headlight);
+    opacity: 1;
+  }
+  .meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .number {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-headlight);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.05em;
+  }
+  .badge {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-smoke);
+    background: var(--color-fog);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .title {
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.25;
+    color: var(--color-ink);
+  }
+  .preview {
+    color: var(--color-smoke);
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .footer {
+    display: flex;
+    gap: var(--space-1);
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-smoke);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-mile);
+  }
+</style>

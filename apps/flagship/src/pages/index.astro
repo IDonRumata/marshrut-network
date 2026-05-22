@@ -1,19 +1,252 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import Container from '../components/Container.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Hero from '../components/Hero.astro';
+import ChapterCard from '../components/ChapterCard.astro';
+import DiaryCard from '../components/DiaryCard.astro';
+import EmailSubscribe from '../components/EmailSubscribe.astro';
+
+const chapters = (await getCollection('book'))
+  .sort((a, b) => a.data.chapterNumber - b.data.chapterNumber)
+  .slice(0, 4);
+
+const diaryEntries = (await getCollection('diary'))
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+  .slice(0, 3);
+
+const totalChapters = (await getCollection('book')).length;
 ---
 <Base
   title="Маршрут — Дальнобойщик → Свободный человек"
-  description="Реальная история трансформации из наёмника в свободного человека. Без коучей, без инфоцыганства — только честный путь. Книга, дневник, инструменты."
+  description="Реальная история трансформации из дальнобойщика в свободного человека. Книга, дневник, инструменты. Без коучей."
 >
-  <main style="max-width: 680px; margin: 4rem auto; padding: 0 1.5rem;">
-    <h1 style="font-size: var(--font-size-3xl); margin-bottom: 1rem;">
-      Маршрут
-    </h1>
-    <p style="font-size: var(--font-size-lg); color: var(--color-smoke);">
-      Скелет сайта запущен. Дизайн-токены подключены. Контент следующим коммитом.
-    </p>
-    <p style="margin-top: 2rem; font-family: var(--font-family-mono); font-size: var(--font-size-sm);">
-      Build: {new Date().toISOString()}
-    </p>
+  <Header />
+  <main>
+    <Hero />
+
+    <!-- Живой статус -->
+    <section class="status">
+      <Container size="wide">
+        <div class="status-grid">
+          <div class="status-card">
+            <span class="status-label">Сейчас</span>
+            <span class="status-value">Польша</span>
+          </div>
+          <div class="status-card">
+            <span class="status-label">Глава</span>
+            <span class="status-value">{totalChapters} из ~40</span>
+          </div>
+          <div class="status-card">
+            <span class="status-label">MorozAI</span>
+            <span class="status-value">Месяц 4</span>
+          </div>
+        </div>
+      </Container>
+    </section>
+
+    <!-- О чём -->
+    <section class="manifesto">
+      <Container size="default">
+        <h2 class="section-title">Не очередной блог об успехе</h2>
+        <div class="columns">
+          <div class="col col--negative">
+            <h3>Чего здесь нет</h3>
+            <ul>
+              <li>«Как я заработал миллион за месяц»</li>
+              <li>Курс за 50 000 ₽</li>
+              <li>Мотивационный контент</li>
+              <li>Партнёрки за вознаграждение</li>
+            </ul>
+          </div>
+          <div class="col col--positive">
+            <h3>Что есть</h3>
+            <ul>
+              <li>Реальные даты и цифры</li>
+              <li>Провалы и их причины</li>
+              <li>Инструменты, которые я использую сам</li>
+              <li>Открытый исходник этого сайта</li>
+            </ul>
+          </div>
+        </div>
+      </Container>
+    </section>
+
+    <!-- Книга -->
+    <section class="section book-section">
+      <Container size="wide">
+        <header class="section-header">
+          <div>
+            <h2 class="section-title">Читать книгу</h2>
+            <p class="section-lede">Новые главы каждую неделю. Всегда бесплатно.</p>
+          </div>
+          <a class="see-all" href="/book/">Все главы →</a>
+        </header>
+        <div class="chapter-grid">
+          {chapters.map((ch) => (
+            <ChapterCard
+              chapterNumber={ch.data.chapterNumber}
+              title={ch.data.title}
+              preview={ch.data.previewText}
+              href={`/book/${ch.id}/`}
+              readingTimeMin={ch.data.readingTimeMin}
+              publishedAt={ch.data.publishedAt}
+              isFree={ch.data.isFree}
+            />
+          ))}
+        </div>
+      </Container>
+    </section>
+
+    <!-- Email -->
+    <section class="section email-section">
+      <Container size="wide">
+        <EmailSubscribe />
+      </Container>
+    </section>
+
+    <!-- Дневник -->
+    <section class="section diary-section">
+      <Container size="default">
+        <header class="section-header">
+          <div>
+            <h2 class="section-title">Дневник из дороги</h2>
+            <p class="section-lede">Короткие записи. Без правок.</p>
+          </div>
+          <a class="see-all" href="/diary/">Все записи →</a>
+        </header>
+        <div class="diary-list">
+          {diaryEntries.map((d) => (
+            <DiaryCard
+              title={d.data.title}
+              href={`/diary/${d.id}/`}
+              location={d.data.location}
+              publishedAt={d.data.publishedAt}
+              excerpt={d.body?.slice(0, 200) ?? ''}
+            />
+          ))}
+        </div>
+      </Container>
+    </section>
   </main>
+  <Footer />
+</Base>
+
+<style>
+  /* Status */
+  .status {
+    padding: var(--space-4) 0;
+    border-bottom: 1px solid var(--color-mile);
+  }
+  .status-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-2);
+  }
+  .status-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: var(--space-3);
+    background: var(--color-white);
+    border: 1px solid var(--color-mile);
+    border-radius: var(--radius-md);
+  }
+  .status-label {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-smoke);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+  .status-value {
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-ink);
+  }
+  @media (max-width: 600px) {
+    .status-card { padding: var(--space-2); }
+    .status-value { font-size: var(--font-size-base); }
+  }
+
+  /* Manifesto */
+  .manifesto { padding: var(--space-12) 0; }
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    margin-top: var(--space-4);
+  }
+  @media (min-width: 768px) {
+    .columns { grid-template-columns: 1fr 1fr; gap: var(--space-8); }
+  }
+  .col h3 {
+    font-family: var(--font-family-body);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-2);
+  }
+  .col--negative h3 { color: var(--color-smoke); }
+  .col--positive h3 { color: var(--color-headlight); }
+  .col ul { list-style: none; padding: 0; }
+  .col li {
+    padding: var(--space-1) 0;
+    font-size: var(--font-size-lg);
+    line-height: 1.5;
+    color: var(--color-ink);
+    border-bottom: 1px solid var(--color-mile);
+  }
+  .col--negative li::before { content: '— '; color: var(--color-smoke); }
+  .col--positive li::before { content: '✓ '; color: var(--color-headlight); font-weight: bold; }
+
+  /* Generic section */
+  .section { padding: var(--space-8) 0; }
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: var(--space-4);
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .section-title {
+    font-family: var(--font-family-heading);
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    line-height: 1.2;
+    color: var(--color-ink);
+  }
+  .section-lede {
+    color: var(--color-smoke);
+    font-size: var(--font-size-base);
+    margin-top: var(--space-1);
+  }
+  .see-all {
+    font-family: var(--font-family-body);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-base);
+    color: var(--color-headlight);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  /* Chapters */
+  .chapter-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+  @media (min-width: 600px) { .chapter-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1024px) { .chapter-grid { grid-template-columns: repeat(4, 1fr); } }
+
+  /* Diary */
+  .diary-list { display: flex; flex-direction: column; }
+
+  /* Email section spacing */
+  .email-section { padding-block: var(--space-12); }
+</style>
 </Base>

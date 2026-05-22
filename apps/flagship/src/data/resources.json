@@ -1,0 +1,143 @@
+{
+  "$schema": "./resources.schema.json",
+  "lastUpdated": "2026-05-22",
+  "disclaimer": "Здесь только то, что я реально использую сам. Партнёрские ссылки помечены — это значит, что если ты регистрируешься по моей ссылке, я получаю небольшой бонус, а ты платишь столько же или со скидкой. Не использовать инструмент только потому, что он в списке — плохая идея. Думай головой.",
+  "categories": [
+    {
+      "id": "hosting",
+      "name": "Хостинг и инфраструктура",
+      "description": "Где живёт этот сайт и мои боты.",
+      "items": [
+        {
+          "name": "Hetzner Cloud",
+          "url": "https://www.hetzner.com/cloud",
+          "logo": "/img/logos/hetzner.svg",
+          "description": "Немецкий хостинг. Беру CX22 за €4.51/мес — этого хватит сайту с 100k посещений и трём ботам сверху. Дата-центры в EU = чисто по GDPR.",
+          "price": "€4.51/мес",
+          "tags": ["EU", "GDPR", "VPS"],
+          "affiliate": false
+        },
+        {
+          "name": "Cloudflare",
+          "url": "https://www.cloudflare.com",
+          "logo": "/img/logos/cloudflare.svg",
+          "description": "CDN, DNS и защита от DDoS на бесплатном плане. Без него сайт грузился бы из Германии в Минске 200мс, с ним — 30. Регистратор домена дешевле всех.",
+          "price": "бесплатно",
+          "tags": ["CDN", "DNS"],
+          "affiliate": false
+        },
+        {
+          "name": "GitHub",
+          "url": "https://github.com",
+          "logo": "/img/logos/github.svg",
+          "description": "Весь код моих проектов открыт здесь. Бесплатные Actions для CI/CD, бесплатный Pages для статики. Открытый код — это часть моего бренда.",
+          "price": "бесплатно",
+          "tags": ["git", "CI/CD"],
+          "affiliate": false
+        }
+      ]
+    },
+    {
+      "id": "ai",
+      "name": "AI-инструменты",
+      "description": "Без чего я не написал бы ни строчки этого сайта.",
+      "items": [
+        {
+          "name": "Claude",
+          "url": "https://claude.ai",
+          "logo": "/img/logos/claude.svg",
+          "description": "Главный инструмент. Пишет код, ведёт документацию, иногда отговаривает меня от глупостей. Pro-подписка отбивается за два дня работы.",
+          "price": "$20/мес",
+          "tags": ["AI", "кодинг", "ассистент"],
+          "affiliate": false
+        },
+        {
+          "name": "Claude Code",
+          "url": "https://www.anthropic.com/claude-code",
+          "logo": "/img/logos/claude-code.svg",
+          "description": "Терминальный агент от Anthropic. Сам делает git-коммиты, гоняет тесты, читает логи. Это уже не помощник, а напарник.",
+          "price": "включено в Pro",
+          "tags": ["CLI", "автономный"],
+          "affiliate": false
+        },
+        {
+          "name": "ChatGPT Plus",
+          "url": "https://chat.openai.com",
+          "logo": "/img/logos/openai.svg",
+          "description": "Держу как второе мнение. Бывает полезно — но кодинг отдал Claude.",
+          "price": "$20/мес",
+          "tags": ["AI"],
+          "affiliate": false
+        }
+      ]
+    },
+    {
+      "id": "finance-eu",
+      "name": "Финансы в EU",
+      "description": "Как принимать деньги и не платить лишние 3% банкам.",
+      "items": [
+        {
+          "name": "Wise",
+          "url": "https://wise.com",
+          "logo": "/img/logos/wise.svg",
+          "description": "Мультивалютный счёт с реальным курсом. Сюда мне приходят первые €40 за бота. Без открытия польского ИП — нерезидент тоже может.",
+          "price": "комиссия за конвертацию ~0.5%",
+          "tags": ["EU", "EUR", "PLN"],
+          "affiliate": false
+        },
+        {
+          "name": "Revolut",
+          "url": "https://revolut.com",
+          "logo": "/img/logos/revolut.svg",
+          "description": "Виртуальные карты для подписок. Кончились деньги — карту удалил, никакого хвоста.",
+          "price": "бесплатный тариф есть",
+          "tags": ["EU", "виртуальные-карты"],
+          "affiliate": false
+        },
+        {
+          "name": "mBank",
+          "url": "https://www.mbank.pl",
+          "logo": "/img/logos/mbank.svg",
+          "description": "Польский банк, открыл удалённо по паспорту. Когда дойдёт до JDG (польского ИП) — счёт для бизнеса будет здесь же.",
+          "price": "0 PLN",
+          "tags": ["Польша", "PLN"],
+          "affiliate": false
+        }
+      ]
+    },
+    {
+      "id": "automation",
+      "name": "Автоматизация и контент",
+      "description": "Чем я склеиваю свои сервисы между собой.",
+      "items": [
+        {
+          "name": "n8n",
+          "url": "https://n8n.io",
+          "logo": "/img/logos/n8n.svg",
+          "description": "Self-hosted на том же Hetzner. Делает всё что нужно: парсит RSS, лезет в Notion, постит в Telegram. Бесплатно если хостишь сам.",
+          "price": "бесплатно (self-hosted)",
+          "tags": ["low-code", "автоматизация"],
+          "affiliate": false
+        },
+        {
+          "name": "Notion",
+          "url": "https://www.notion.so",
+          "logo": "/img/logos/notion.svg",
+          "description": "Здесь я пишу черновики глав, веду базу контента. n8n забирает из Notion статус «Готово» и кладёт markdown в репо.",
+          "price": "бесплатно для одного",
+          "tags": ["CMS", "заметки"],
+          "affiliate": false
+        },
+        {
+          "name": "Listmonk",
+          "url": "https://listmonk.app",
+          "logo": "/img/logos/listmonk.svg",
+          "description": "Self-hosted альтернатива Mailerlite. Бесплатно, никакого лимита подписчиков. Email-рассылки книги идут отсюда.",
+          "price": "бесплатно (self-hosted)",
+          "tags": ["email", "self-hosted"],
+          "affiliate": false
+        }
+      ]
+    }
+  ]
+}

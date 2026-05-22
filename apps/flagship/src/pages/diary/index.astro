@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Container from '../../components/Container.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import DiaryCard from '../../components/DiaryCard.astro';
+
+const entries = (await getCollection('diary')).sort(
+  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
+);
+---
+<Base
+  title="Дневник из дороги — Маршрут"
+  description="Короткие записи Андрея Мороза из рейсов по EU. Без правок и шлифовки."
+>
+  <Header />
+  <main>
+    <Container size="default">
+      <header class="page-header">
+        <p class="eyebrow">Дневник</p>
+        <h1>Дневник из дороги</h1>
+        <p class="lede">
+          Короткие записи. То, что не помещается в главу книги, но не должно потеряться.
+        </p>
+      </header>
+      <section class="list">
+        {entries.map((d) => (
+          <DiaryCard
+            title={d.data.title}
+            href={`/diary/${d.id}/`}
+            location={d.data.location}
+            publishedAt={d.data.publishedAt}
+            excerpt={d.body?.slice(0, 200) ?? ''}
+          />
+        ))}
+      </section>
+    </Container>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .page-header { padding: var(--space-8) 0 var(--space-4); text-align: center; }
+  .eyebrow {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-headlight);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: var(--space-2);
+  }
+  h1 {
+    font-family: var(--font-family-heading);
+    font-size: clamp(2rem, 5vw, 3.75rem);
+    line-height: 1.15;
+    margin-bottom: var(--space-2);
+  }
+  .lede {
+    color: var(--color-smoke);
+    font-size: var(--font-size-lg);
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  .list { padding: var(--space-4) 0 var(--space-8); }
+</style>

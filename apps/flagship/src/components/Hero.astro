@@ -1,0 +1,138 @@
+---
+import Container from './Container.astro';
+---
+<section class="hero">
+  <div class="bg-overlay"></div>
+  <Container size="default" class="hero-content">
+    <p class="eyebrow">Личный сайт Андрея Мороза</p>
+    <h1 class="title">
+      Я вёл фуру по Европе.<br />
+      Писал код между рейсами.<br />
+      <span class="accent">Теперь строю жизнь у моря.</span>
+    </h1>
+    <p class="lede">
+      Реальная история трансформации из наёмника в свободного человека.
+      Без коучей, без инфоцыганства — только честный путь.
+    </p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="/book/">
+        Читать с начала
+        <span class="arrow">→</span>
+      </a>
+      <a class="btn btn-ghost" href="/about/">Кто я</a>
+    </div>
+    <p class="social-proof">
+      <span class="dot"></span>
+      Сайт открыт. Главы пишутся. Подписчиков пока ноль — будь первым.
+    </p>
+  </Container>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, var(--color-road) 0%, var(--color-ink) 60%, var(--color-asphalt) 100%);
+    color: var(--color-fog);
+    overflow: hidden;
+    padding: var(--space-8) 0;
+  }
+  .bg-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(233, 69, 96, 0.15), transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(15, 52, 96, 0.4), transparent 50%);
+    pointer-events: none;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+  .eyebrow {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-headlight);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: var(--space-3);
+  }
+  .title {
+    font-family: var(--font-family-heading);
+    font-size: clamp(2rem, 6vw, 3.75rem);
+    line-height: 1.1;
+    margin-bottom: var(--space-3);
+    font-weight: 700;
+  }
+  .accent { color: var(--color-headlight); }
+  .lede {
+    font-size: var(--font-size-lg);
+    color: var(--color-mile);
+    max-width: 560px;
+    line-height: 1.6;
+    margin-bottom: var(--space-4);
+  }
+  .cta-row {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-4);
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 14px 32px;
+    border-radius: var(--radius-md);
+    font-family: var(--font-family-body);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-base);
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+  }
+  .btn-primary {
+    background: var(--color-headlight);
+    color: var(--color-white);
+    box-shadow: var(--shadow-cta);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-ctaHover);
+    opacity: 1;
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-fog);
+    border: 2px solid var(--color-smoke);
+  }
+  .btn-ghost:hover {
+    border-color: var(--color-fog);
+    background: rgba(255, 255, 255, 0.05);
+    opacity: 1;
+  }
+  .arrow { transition: transform 0.2s; }
+  .btn:hover .arrow { transform: translateX(4px); }
+  .social-proof {
+    font-size: var(--font-size-sm);
+    color: var(--color-smoke);
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+  .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-headlight);
+    box-shadow: 0 0 12px var(--color-headlight);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.5; transform: scale(0.8); }
+  }
+</style>

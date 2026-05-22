@@ -1,0 +1,29 @@
+---
+interface Props {
+  size?: 'narrow' | 'default' | 'wide';
+  as?: string;
+  class?: string;
+}
+const { size = 'default', as: Tag = 'div', class: extra = '' } = Astro.props;
+const maxWidth = {
+  narrow: '680px',
+  default: '1000px',
+  wide: '1200px',
+}[size];
+---
+<Tag class={`container ${extra}`} style={`max-width: ${maxWidth};`}>
+  <slot />
+</Tag>
+
+<style>
+  .container {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: var(--space-3);
+  }
+  @media (min-width: 768px) {
+    .container {
+      padding-inline: var(--space-4);
+    }
+  }
+</style>

@@ -1,0 +1,118 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Container from '../../components/Container.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ChapterCard from '../../components/ChapterCard.astro';
+import EmailSubscribe from '../../components/EmailSubscribe.astro';
+
+const chapters = (await getCollection('book')).sort(
+  (a, b) => a.data.chapterNumber - b.data.chapterNumber
+);
+const targetTotal = 40;
+const progressPct = Math.round((chapters.length / targetTotal) * 100);
+---
+<Base
+  title="Книга «Маршрут» — главы | Дальнобойщик пишет код"
+  description="Все главы книги Андрея Мороза. Реальная история трансформации из дальнобойщика в свободного человека через AI-кодинг."
+>
+  <Header />
+  <main>
+    <Container size="default">
+      <header class="page-header">
+        <p class="eyebrow">Книга</p>
+        <h1>Маршрут: Дальнобойщик → Свободный человек</h1>
+        <p class="lede">
+          История пишется по главам, в реальном времени. Без сюжета, написанного задним числом.
+          Если глава появилась — значит, эта неделя что-то означала.
+        </p>
+        <div class="progress">
+          <div class="progress-bar">
+            <div class="progress-fill" style={`width: ${progressPct}%`}></div>
+          </div>
+          <p class="progress-text">
+            Написано <strong>{chapters.length} из ~{targetTotal}</strong> глав
+          </p>
+        </div>
+      </header>
+
+      <section class="chapters">
+        {chapters.map((ch) => (
+          <ChapterCard
+            chapterNumber={ch.data.chapterNumber}
+            title={ch.data.title}
+            preview={ch.data.previewText}
+            href={`/book/${ch.id}/`}
+            readingTimeMin={ch.data.readingTimeMin}
+            publishedAt={ch.data.publishedAt}
+            isFree={ch.data.isFree}
+          />
+        ))}
+      </section>
+
+      <div class="email-wrap">
+        <EmailSubscribe variant="light" />
+      </div>
+    </Container>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .page-header {
+    padding: var(--space-8) 0 var(--space-6);
+    text-align: center;
+  }
+  .eyebrow {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-headlight);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: var(--space-2);
+  }
+  h1 {
+    font-family: var(--font-family-heading);
+    font-size: clamp(2rem, 5vw, 3.75rem);
+    line-height: 1.15;
+    margin-bottom: var(--space-3);
+  }
+  .lede {
+    color: var(--color-smoke);
+    font-size: var(--font-size-lg);
+    line-height: 1.5;
+    max-width: 560px;
+    margin: 0 auto var(--space-4);
+  }
+  .progress {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .progress-bar {
+    height: 6px;
+    background: var(--color-mile);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--color-headlight);
+    transition: width 0.5s;
+  }
+  .progress-text {
+    margin-top: var(--space-1);
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-smoke);
+  }
+  .chapters {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+    padding: var(--space-6) 0;
+  }
+  @media (min-width: 600px) { .chapters { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1024px) { .chapters { grid-template-columns: 1fr 1fr 1fr; } }
+  .email-wrap { padding: var(--space-4) 0 var(--space-8); }
+</style>

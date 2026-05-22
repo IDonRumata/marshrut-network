@@ -1,0 +1,104 @@
+---
+import Container from './Container.astro';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <Container size="wide">
+    <div class="grid">
+      <div class="brand">
+        <p class="logo">МАРШРУТ</p>
+        <p class="tagline">Дальнобойщик, который учится писать код между рейсами.</p>
+      </div>
+      <div class="col">
+        <h4>Читать</h4>
+        <ul>
+          <li><a href="/book/">Книга</a></li>
+          <li><a href="/diary/">Дневник</a></li>
+          <li><a href="/resources/">Ресурсы</a></li>
+          <li><a href="/about/">Обо мне</a></li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Подписаться</h4>
+        <ul>
+          <li><a href="https://t.me/marshrut_andrei">Telegram-канал</a></li>
+          <li><a href="https://github.com/IDonRumata/marshrut-network">Исходники сайта</a></li>
+          <li><a href="/llms.txt">llms.txt</a></li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Юридическое</h4>
+        <ul>
+          <li><a href="/privacy/">Политика конфиденциальности</a></li>
+          <li><a href="/affiliate/">О партнёрских ссылках</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="bottom">
+      <p>© {year} Андрей Мороз. Сайт защищён <a href="/pqc/">пост-квантовой криптографией</a>.</p>
+      <p class="mono">Source: <a href="https://github.com/IDonRumata/marshrut-network">github.com/IDonRumata/marshrut-network</a></p>
+    </div>
+  </Container>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: var(--space-16);
+    background: var(--color-ink);
+    color: var(--color-fog);
+    padding: var(--space-8) 0 var(--space-4);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    margin-bottom: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .grid { grid-template-columns: 2fr 1fr 1fr 1fr; }
+  }
+  .brand .logo {
+    font-family: var(--font-family-heading);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-xl);
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-1);
+  }
+  .tagline {
+    color: var(--color-smoke);
+    font-size: var(--font-size-sm);
+    max-width: 280px;
+  }
+  h4 {
+    font-family: var(--font-family-body);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-mile);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-2);
+  }
+  ul { list-style: none; padding: 0; }
+  ul li { margin-bottom: var(--space-1); }
+  ul a {
+    color: var(--color-fog);
+    font-size: var(--font-size-sm);
+    text-decoration: none;
+  }
+  ul a:hover { color: var(--color-headlight); }
+  .bottom {
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--color-road);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    font-size: var(--font-size-xs);
+    color: var(--color-smoke);
+  }
+  @media (min-width: 768px) {
+    .bottom { flex-direction: row; justify-content: space-between; }
+  }
+  .bottom a { color: var(--color-smoke); }
+  .bottom a:hover { color: var(--color-headlight); }
+  .mono { font-family: var(--font-family-mono); }
+</style>

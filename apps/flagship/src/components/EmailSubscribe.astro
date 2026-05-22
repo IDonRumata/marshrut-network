@@ -1,0 +1,120 @@
+---
+interface Props {
+  variant?: 'dark' | 'light';
+  compact?: boolean;
+}
+const { variant = 'dark', compact = false } = Astro.props;
+---
+<section class:list={['email-block', `email-block--${variant}`, { 'email-block--compact': compact }]}>
+  <div class="inner">
+    {!compact && <p class="eyebrow">Получать главы первым</p>}
+    <h2 class="title">
+      {compact ? 'Новая глава каждую пятницу.' : 'Новая глава каждую пятницу.'}
+    </h2>
+    {!compact && (
+      <p class="lede">
+        Плюс инструменты, которые я реально использую (а не партнёрки за вознаграждение).
+      </p>
+    )}
+    <form class="form" data-form="subscribe">
+      <input
+        type="email"
+        name="email"
+        placeholder="your@email.com"
+        required
+        aria-label="Email адрес"
+      />
+      <button type="submit">Подписаться</button>
+    </form>
+    <p class="legal">
+      Без спама. Отписка в один клик. Хранимся в EU, GDPR-compliant.
+    </p>
+  </div>
+</section>
+
+<style>
+  .email-block {
+    padding: var(--space-8) 0;
+    border-radius: var(--radius-xl);
+  }
+  .email-block--dark {
+    background: linear-gradient(135deg, var(--color-road), var(--color-ink));
+    color: var(--color-fog);
+  }
+  .email-block--light {
+    background: var(--color-white);
+    border: 1px solid var(--color-mile);
+    color: var(--color-ink);
+  }
+  .email-block--compact { padding: var(--space-4) 0; }
+  .inner {
+    max-width: 600px;
+    margin: 0 auto;
+    padding-inline: var(--space-3);
+    text-align: center;
+  }
+  .eyebrow {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-headlight);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: var(--space-2);
+  }
+  .title {
+    font-family: var(--font-family-heading);
+    font-size: clamp(1.5rem, 4vw, 2.75rem);
+    line-height: 1.2;
+    margin-bottom: var(--space-2);
+  }
+  .lede {
+    color: var(--color-mile);
+    font-size: var(--font-size-base);
+    margin-bottom: var(--space-3);
+  }
+  .email-block--light .lede { color: var(--color-smoke); }
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin-bottom: var(--space-2);
+  }
+  @media (min-width: 480px) {
+    .form { flex-direction: row; }
+  }
+  .form input {
+    flex: 1;
+    padding: 14px 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-mile);
+    background: var(--color-white);
+    color: var(--color-ink);
+    font-family: inherit;
+    font-size: var(--font-size-base);
+  }
+  .form input:focus-visible {
+    outline: 2px solid var(--color-headlight);
+    outline-offset: 1px;
+  }
+  .form button {
+    padding: 14px 28px;
+    border-radius: var(--radius-md);
+    background: var(--color-headlight);
+    color: var(--color-white);
+    font-family: inherit;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-base);
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: var(--shadow-cta);
+  }
+  .form button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-ctaHover);
+  }
+  .legal {
+    font-size: var(--font-size-xs);
+    color: var(--color-smoke);
+    margin-top: var(--space-1);
+  }
+</style>

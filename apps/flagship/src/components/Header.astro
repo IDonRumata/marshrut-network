@@ -1,0 +1,78 @@
+---
+import Container from './Container.astro';
+const links = [
+  { href: '/book/',      label: 'Книга' },
+  { href: '/diary/',     label: 'Дневник' },
+  { href: '/resources/', label: 'Ресурсы' },
+  { href: '/about/',     label: 'Обо мне' },
+];
+const pathname = Astro.url.pathname;
+---
+<header class="site-header">
+  <Container size="wide">
+    <nav class="nav">
+      <a href="/" class="logo">МАРШРУТ</a>
+      <ul class="links">
+        {links.map(link => (
+          <li>
+            <a
+              href={link.href}
+              class:list={['link', { 'link--active': pathname.startsWith(link.href) }]}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </Container>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(245, 245, 240, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-mile);
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-2) 0;
+    gap: var(--space-4);
+  }
+  .logo {
+    font-family: var(--font-family-heading);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-xl);
+    color: var(--color-ink);
+    letter-spacing: 0.08em;
+    text-decoration: none;
+  }
+  .links {
+    display: none;
+    list-style: none;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+  }
+  .link {
+    font-family: var(--font-family-body);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-ink);
+    text-decoration: none;
+    padding: var(--space-1) 0;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.15s, opacity 0.15s;
+  }
+  .link:hover { opacity: 1; border-bottom-color: var(--color-headlight); }
+  .link--active { border-bottom-color: var(--color-headlight); }
+  @media (min-width: 768px) {
+    .links { display: flex; }
+  }
+</style>
