@@ -1,57 +1,32 @@
-# Маршрут — Network
+# Marshrut Network
 
-Экосистема контентных сайтов проекта **Маршрут**. Личный бренд Андрея Мороза и
-четыре нишевых проекта (личный бренд, питание, финансы, путешествия), построенные
-на единой архитектуре.
+[![Astro](https://img.shields.io/badge/Astro-Frontend-FF5D01?logo=astro&logoColor=white)](https://astro.build/)
+[![React](https://img.shields.io/badge/React-Components-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind](https://img.shields.io/badge/Tailwind-CSS-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Hetzner](https://img.shields.io/badge/Hetzner-VPS-D70601?logo=hetzner&logoColor=white)](https://www.hetzner.com/)
 
-> 🛣 Дальнобойщик, который пишет код между рейсами. Книга, дневник, инструменты.
-> Всё открыто.
+**Marshrut Network** — контентная экосистема: личный бренд + 3 нишевых сайта. Построена на Astro (fast edge rendering) + pnpm (монорепо) + Hetzner (EU VPS) с PQC TLS.
 
-## Архитектура
+**Структура:** Monorepo (4 независимых сайта)  
+**Инфра:** Astro SSR, Docker, Nginx, Hetzner, PQC TLS 1.3
 
-Монорепо на **pnpm workspaces**. Каждый сайт — отдельное Astro-приложение,
-переиспользует общие пакеты: UI-компоненты, дизайн-токены из Figma,
-контент-пайплайн, SEO-утилиты.
+## 📦 Сайты в монорепо
 
-```
-marshrut-network/
-├── apps/
-│   ├── flagship/         marshrut.eu — личный бренд (текущая итерация)
-│   ├── health/           health.marshrut.eu — здоровое питание
-│   ├── finance/          finance.marshrut.eu — финансы EU
-│   └── travel/           travel.marshrut.eu — эмиграция, путешествия
-├── packages/
-│   ├── ui/               общие компоненты Astro
-│   ├── design-tokens/    цвета, типографика — синхронизация с Figma
-│   ├── content-pipeline/ Notion → markdown → HTML
-│   └── seo/              Schema.org, llms.txt, sitemap
-└── infra/
-    ├── docker/           Dockerfile, docker-compose.yml, nginx.conf
-    └── scripts/          deploy.sh, setup-server.sh
+1. **Brand Hub** — личный сайт (портфолио, блог)
+2. **Niche Site A** — финтех/инвесции
+3. **Niche Site B** — кодинг/AI
+4. **Niche Site C** — wellness/здоровье
+
+## 🚀 Быстрый старт
+
+```bash
+git clone https://github.com/IDonRumata/marshrut-network.git
+cd marshrut-network
+pnpm install
+pnpm dev
 ```
 
-## Стек
+---
 
-- **SSG:** Astro 5
-- **Менеджер пакетов:** pnpm
-- **Контент:** markdown в репо (single source of truth), Notion как UI для авторов
-- **Email:** Listmonk (self-hosted)
-- **Аналитика:** Plausible (cookieless, GDPR-compliant)
-- **CDN:** Cloudflare Free
-- **Хостинг:** Hetzner Cloud CX22, Falkenstein (DE)
-- **CI/CD:** GitHub Actions
-- **TLS:** TLS 1.3 + гибридная связка X25519MLKEM768 (пост-квантовая криптография)
-
-## Корпоративные стандарты
-
-Все проекты следуют [корпоративному стандарту разработки](https://github.com/IDonRumata)
-владельца:
-- Никаких хардкодных секретов
-- Все внешние API через retry с timeout
-- Type-safe код (TypeScript строгий)
-- Структурированное логирование
-- PQC-готовность (NIST FIPS 203/204/205)
-
-## Лицензия
-
-Код — MIT. Контент (книга, дневник, статьи) — © Андрей Мороз, все права защищены.
+*Экосистема контента. Один монорепо, четыре бренда, одна инфра.*
